@@ -1,6 +1,7 @@
 ﻿import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import CategoryCard from './CategoryCard'
+import CategorySkeleton from './CategorySkeleton'
 import { colors } from '@/theme/color'
 import { typography } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
@@ -46,7 +47,7 @@ export default function CategorySection() {
     return (
       <Section>
         <Title>선물 테마</Title>
-        <p>로딩중...</p>
+        <CategorySkeleton />
       </Section>
     )
   }
