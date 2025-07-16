@@ -1,8 +1,11 @@
 ﻿import styled from '@emotion/styled'
+import { useNavigate } from 'react-router-dom'
 import { colors } from '@/theme/color'
 import { typography } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
+
 interface CategoryCardProps {
+  themeId: number
   name: string
   image: string
 }
@@ -28,9 +31,13 @@ const Name = styled.p`
   color: ${colors.text.default};
 `
 
-const CategoryCard = ({ name, image }: CategoryCardProps) => {
+const CategoryCard = ({ themeId, name, image }: CategoryCardProps) => {
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(`/theme/${themeId}`)
+  }
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <Image src={image} alt={name} />
       <Name>{name}</Name>
     </Card>

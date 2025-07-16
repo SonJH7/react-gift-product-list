@@ -5,7 +5,7 @@ import OrderPage from '@/pages/OrderPage'
 import MyPage from '@/pages/MyPage'
 import NotFound from '@/pages/NotFound'
 import RequireAuth from '@/components/RequireAuth'
-
+import ThemeProductsPage from '@/pages/ThemeProductsPage'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/order/:id',
         element: <OrderPage />,
+      },
+      {
+        path: '/theme/:id',
+        element: <ThemeProductsPage />,
       },
     ],
   },
