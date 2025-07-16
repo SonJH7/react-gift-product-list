@@ -7,6 +7,7 @@ import NotFound from '@/pages/NotFound'
 import RequireAuth from '@/components/RequireAuth'
 import ThemeProductsPage from '@/pages/ThemeProductsPage'
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
         path: '/theme/:id',
         element: <ThemeProductsPage />,
       },
+
     ],
   },
     {
