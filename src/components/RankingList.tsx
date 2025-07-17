@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
+
 import styled from '@emotion/styled'
 import { spacing } from '@/theme/spacing'
 import LoadMoreButton from './LoadMoreButton'
@@ -48,6 +49,7 @@ const RankingList: React.FC = () => {
 
   if (error || products.length === 0) {
     return <Wrapper>상품 목록이 없습니다.</Wrapper>
+
   }
 
   return (

@@ -55,14 +55,17 @@ export default function CategorySection() {
   if (error || themes.length === 0) {
     return null
   }
+
   return (
     <Section>
       <Title>선물 테마</Title>
       <Grid>
         {themes.map(({ themeId, name, image }) => (
+
           <CategoryCard key={themeId} name={name} image={image} />
         ))}
       </Grid>
     </Section>
   )
 }
+
