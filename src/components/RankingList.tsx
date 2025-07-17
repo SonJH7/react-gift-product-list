@@ -9,6 +9,8 @@ import RankingItem from './RankingItem'
 import RankingSkeleton from './RankingSkeleton'
 import { fetchProductRanking } from '@/api/product'
 import type { Product } from '@/type'
+import { targetMap, rankMap } from '@/constants/ranking'
+
 
 //— RankingList 컴포넌트
 const RankingList: React.FC = () => {
@@ -20,17 +22,7 @@ const RankingList: React.FC = () => {
 
   const gender = searchParams.get('gender') ?? 'all'
   const sort = searchParams.get('sort') ?? 'wanted'
-  const targetMap: Record<string, string> = {
-    all: 'ALL',
-    female: 'FEMALE',
-    male: 'MALE',
-    teen: 'TEEN',
-  }
-  const rankMap: Record<string, string> = {
-    wanted: 'MANY_WISH',
-    sent: 'MANY_RECEIVE',
-    wished: 'MANY_WISH_RECEIVE',
-  }
+
   useEffect(() => {
     const targetType = targetMap[gender] ?? 'ALL'
     const rankType = rankMap[sort] ?? 'MANY_WISH'
