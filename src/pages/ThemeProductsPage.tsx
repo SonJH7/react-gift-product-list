@@ -16,41 +16,46 @@ const Grid = styled.div`
 
 export default function ThemeProductsPage() {
   const { id } = useParams<{ id: string }>()
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    async function load(targetId: number) { 
-           try {
-        const data = await fetchThemeProducts(targetId)
-        setProducts(data.list)
-       } catch {
-        try {
-          const themes = await fetchThemes()
-          if (themes.length > 0) {
-            const fallbackId = themes[0].themeId
-            const data = await fetchThemeProducts(fallbackId)
-            setProducts(data.list)
-                        if (fallbackId !== targetId) {
-              navigate(`/theme/${fallbackId}`, { replace: true })
-            }
-          } else {
-            setError(true)
-          }
-        } catch {
-          setError(true)
+    async function loadThemeProducts(themeId: number) {
+      const data = await fetchThemeProducts(themeId)
+      setProducts(data.list)
+    }
+
+    async function handleFallback(originalId: number) {
+      try {
+        const themes = await fetchThemes()
+        if (themes.length === 0) {
+          throw new Error('No themes')
         }
+        const fallbackId = themes[0].themeId
+        await loadThemeProducts(fallbackId)
+        if (fallbackId !== originalId) {
+          navigate(`/theme/${fallbackId}`, { replace: true })
+        }
+      } catch {
+        setError(true)
+      }
+    }
+    async function load(targetId: number) {
+      try {
+        await loadThemeProducts(targetId)
+      } catch {
+        await handleFallback(targetId)
       } finally {
         setLoading(false)
       }
     }
-        const themeId = Number(id)
+    const themeId = Number(id)
 
     setLoading(true)
     setError(false)
-        if (!id || Number.isNaN(themeId)) {
+    if (!id || Number.isNaN(themeId)) {
       load(0)
     } else {
       load(themeId)
