@@ -1,5 +1,5 @@
 ﻿import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import useAsync from '@/hooks/useAsync'
 import CategoryCard from './CategoryCard'
 import CategorySkeleton from './CategorySkeleton'
 import { colors } from '@/theme/color'
@@ -26,22 +26,8 @@ const Grid = styled.div`
   gap: ${spacing.spacing4};
 `
 export default function CategorySection() {
-  const [themes, setThemes] = useState<Theme[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    fetchThemes()
-      .then((data) => {
-        setThemes(data)
-      })
-      .catch(() => {
-        setError(true)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
+  const { data, loading, error } = useAsync<Theme[]>(fetchThemes, [])
+  const themes = data ?? []
 
   if (loading) {
     return (
@@ -61,11 +47,9 @@ export default function CategorySection() {
       <Title>선물 테마</Title>
       <Grid>
         {themes.map(({ themeId, name, image }) => (
-
           <CategoryCard key={themeId} name={name} image={image} />
         ))}
       </Grid>
     </Section>
   )
 }
-
