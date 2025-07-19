@@ -9,29 +9,29 @@ export interface ThemeProductsResponse {
   cursor: number
   hasMoreList: boolean
 }
+import { fetchApi } from './client'
 
 export async function fetchThemes(): Promise<Theme[]> {
-  const res = await fetch('/api/themes')
-  const json = await res.json()
+  const data = await fetchApi<Theme[]>('/api/themes')
 
-  if (!res.ok || !Array.isArray(json.data)) {
+  if (!Array.isArray(data)) {
     throw new Error('Invalid response from /api/themes')
   }
-    return json.data
+  return data
 }
 
-export async function fetchThemeProducts(themeId: number, cursor = 0, limit = 10): Promise<ThemeProductsResponse> {
-  const params = new URLSearchParams({ cursor: String(cursor), limit: String(limit) })
-  const res = await fetch(`/api/themes/${themeId}/products?${params.toString()}`)
-  const json = await res.json()
-
-  if (
-    !res.ok ||
-    typeof json.data !== 'object' ||
-    !Array.isArray(json.data.list)
-  ) {
+export async function fetchThemeProducts(
+  themeId: number,
+  cursor = 0,
+  limit = 10,
+): Promise<ThemeProductsResponse> {
+  const data = await fetchApi<ThemeProductsResponse>(
+    `/api/themes/${themeId}/products`,
+    { cursor: String(cursor), limit: String(limit) },
+  )
+  if (typeof data !== 'object' || !Array.isArray(data.list)) {
     throw new Error('Invalid response from /api/themes/:themeId/products')
   }
 
-  return json.data
+  return data
 }

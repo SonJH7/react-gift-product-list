@@ -1,10 +1,17 @@
 ﻿import type { Product } from '../type'
-export async function fetchProductRanking(targetType: string = 'ALL', rankType: string = 'MANY_WISH') {  const params = new URLSearchParams({ targetType, rankType });
-  const res = await fetch(`/api/products/ranking?${params.toString()}`);
-  const json = await res.json();
+import { fetchApi } from './client'
 
-  if (!res.ok || !Array.isArray(json.data)) {
-    throw new Error('Invalid response from /api/products/ranking');
+export async function fetchProductRanking(
+  targetType: string = 'ALL',
+  rankType: string = 'MANY_WISH',
+): Promise<Product[]> {
+  const data = await fetchApi<Product[]>('/api/products/ranking', {
+    targetType,
+    rankType,
+  })
+
+  if (!Array.isArray(data)) {
+    throw new Error('Invalid response from /api/products/ranking')
   }
-  return json.data as Product[];
+  return data
 }
